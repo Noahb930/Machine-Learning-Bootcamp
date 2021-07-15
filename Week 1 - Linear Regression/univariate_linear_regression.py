@@ -39,7 +39,7 @@ class UnivariateLinearRegression:
         plt.xlabel("Atmospheric Carbon Dioxide (‱)") # Add x-axis label
         plt.ylabel("Temperature (°C)") # Add y-axis label
         plt.scatter(x, y) # Plot the datapoints
-        x_bounds = np.array([np.min(x),np.max(x)]) # get maximum and minimum x-coordinate
+        x_bounds = np.array([np.min(x),np.max(x)]) # Get maximum and minimum x-coordinate
         plt.plot(x_bounds,x_bounds*self.m+self.b, color='black') # Plot the line of best fit
         plt.text(0.025, 0.95, f'y = {np.round(self.m,3)}x + {np.round(self.b,3)}', fontsize=8, transform = ax.transAxes) # Write the equation for the line of best fit
         plt.text(0.025, 0.9, f'r^2 = {np.round(self.calculate_r_squared(y, y_hat),3)}', fontsize=8, transform = ax.transAxes) # Write the value for r^2
