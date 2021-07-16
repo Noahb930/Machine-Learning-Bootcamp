@@ -23,15 +23,15 @@ class Perceptron:
             return outputs > 0 # Calculate the derivative of the activation function
 
     def loss(self, y_hat, y):
-        if self.activation_func == "mean_squared_error": # Check if the perceptron has a mean squared error loss function
+        if self.loss_func == "mean_squared_error": # Check if the perceptron has a mean squared error loss function
             return np.square(np.subtract(y_hat, y)).mean() # Calculate mean squared error
-        elif self.activation_func == "binary_cross_entropy": # Check if the perceptron has a binary cross entropy loss function
+        elif self.loss_func == "binary_cross_entropy": # Check if the perceptron has a binary cross entropy loss function
             return np.mean(-1 * (y * np.log(y_hat) + (1 - y) * np.log(1 - y_hat))) # Calculate binary cross entropy
     
     def loss_derivative(self, y_hat, y):
-        if self.activation_func == "mean_squared_error": # Check if the perceptron has a mean squared error loss function
+        if self.loss_func == "mean_squared_error": # Check if the perceptron has a mean squared error loss function
             return 2 * np.subtract(y_hat, y) # Calculate the partial derivative of mean squared error with respect to y_hat
-        elif self.activation_func == "binary_cross_entropy": # Check if the perceptron has a binary cross entropy loss function
+        elif self.loss_func == "binary_cross_entropy": # Check if the perceptron has a binary cross entropy loss function
             return (y_hat - y)/(y_hat * (1 - y_hat)) # Calculate the partial derivative of binary cross entropy with respect to y_hat
 
     def feedforward(self,inputs):
@@ -56,7 +56,7 @@ class Perceptron:
         self.loss_curve = checkpoint["loss_curve"] # Recover the perceptron's loss curve from the checkpoint file
     
     def save(self):
-        np.savez("checkpoint.npz", weights = self.weights, bias = self.bias) # Save the values of weights and biases to the file checkpoint.npz
+        np.savez("checkpoint.npz", weights = self.weights, bias = self.bias, loss_curve = self.loss_curve) # Save the values of weights and biases to the file checkpoint.npz
 
     def graph(self, window):
         moving_average_loss = [] # Inititalize the moving average as an empty array
@@ -72,6 +72,6 @@ class Perceptron:
         for epoch in range(epochs): # Conduct training for epochs iterations
             outputs = self.feedforward(inputs) # Feed the inputs into the perceptron and return the predicted value
             loss = self.loss(outputs, ground_truths) # Calculate the error between the predicted and correct values
-            self.loss_curve = np.append(self.loss_curve, [loss])
+            self.loss_curve = np.append(self.loss_curve, [loss]) # Add the loss to the loss curve
             self.backprop(outputs, ground_truths) # Backpropagate the error through the perceptron
         self.save() # Save the trained model
